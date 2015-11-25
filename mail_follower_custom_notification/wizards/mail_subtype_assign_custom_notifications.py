@@ -4,7 +4,7 @@
 from openerp import api, fields, models
 
 
-class MailSubtypeAssignCustomNotifications(models.Model):
+class MailSubtypeAssignCustomNotifications(models.TransientModel):
     _name = 'mail.subtype.assign.custom.notifications'
     _description = 'Assign custom notification settings to existing followers'
 
