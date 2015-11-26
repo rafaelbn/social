@@ -26,8 +26,8 @@ class MailNotification(models.Model):
             if (message.subtype_id in follower.force_mail_subtype_ids or
                 message.subtype_id in follower.force_own_subtype_ids) and\
                     this.partner_id.id not in partner_ids:
-                partner_ids.append(self.partner_id.id)
+                partner_ids.append(this.partner_id.id)
             if message.subtype_id in follower.force_nomail_subtype_ids and\
                     this.partner_id.id in partner_ids:
-                partner_ids.remove(self.partner_id.id)
+                partner_ids.remove(this.partner_id.id)
         return partner_ids
