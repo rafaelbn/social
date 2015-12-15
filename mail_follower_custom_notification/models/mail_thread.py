@@ -92,7 +92,7 @@ class MailThread(models.Model):
                 continue
             bases = list(model_object.__class__.__bases__)
             if MailThread not in bases:
-                bases.insert(bases.index(mail_thread), MailThread)
+                bases.insert(1, MailThread)
             class_dict = dict(model_object.__dict__)
             class_dict['_inherit'] = model_object._name
             new_model_class = type(model_object._name, tuple(bases),
