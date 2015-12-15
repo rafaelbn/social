@@ -81,6 +81,7 @@ class MailThread(models.Model):
 
     def _register_hook(self, cr):
         model_ids = self.pool['ir.model'].search(cr, SUPERUSER_ID, [])
+        rebuilt = []
         for model in self.pool['ir.model'].browse(cr, SUPERUSER_ID, model_ids):
             if model.model not in self.pool:
                 continue
@@ -91,7 +92,7 @@ class MailThread(models.Model):
                 continue
             bases = list(model_object.__class__.__bases__)
             if MailThread not in bases:
-                bases.insert(1, MailThread)
+                bases.insert(bases.index(mail_thread), MailThread)
             class_dict = dict(model_object.__dict__)
             class_dict['_inherit'] = model_object._name
             new_model_class = type(model_object._name, tuple(bases),
@@ -101,5 +102,7 @@ class MailThread(models.Model):
             new_model._prepare_setup(cr, SUPERUSER_ID)
             new_model._setup_base(cr, SUPERUSER_ID, False)
             new_model._setup_fields(cr, SUPERUSER_ID)
-            new_model._setup_complete(cr, SUPERUSER_ID)
+            rebuilt.append(new_model)
+        for model in rebuilt:
+            model._setup_complete(cr, SUPERUSER_ID)
         return super(MailThread, self)._register_hook(cr)
